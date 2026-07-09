@@ -86,7 +86,7 @@
                 <!-- Branding Header -->
                 <div class="flex items-center gap-2 px-2 py-1">
                     <span class="h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
-                    <h2 class="text-sm font-black uppercase text-white tracking-wider bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">InstaNews Node</h2>
+                    <h2 class="text-sm font-black uppercase text-white tracking-wider bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">ONLY SACH</h2>
                 </div>
                 
                 <!-- Vertical Navigation Sidebar Menu -->
@@ -229,7 +229,7 @@
             if (!name || !email || !pass) return alert("Bhai, saare fields bharo pehle!");
 
             if (localStorage.getItem(`user_${email}`)) {
-                alert("Yeh email pehle se registered hai! Sign in karo.");
+                alert("this email id is already registered! Please Sign in .");
                 showSignInScreen();
                 return;
             }
@@ -244,11 +244,11 @@
             const email = document.getElementById("login-email").value.trim().toLowerCase();
             const pass = document.getElementById("login-pass").value.trim();
 
-            if (!email || !pass) return alert("Email aur Password dono daalo!");
+            if (!email || !pass) return alert("enter both Email id and Password!");
 
             const storedDataRaw = localStorage.getItem(`user_${email}`);
             if (!storedDataRaw) {
-                alert("Is email se koi account nahi mila! Pehle Sign Up karo.");
+                alert("No account from this Email id! Please sign up First.");
                 showSignUpScreen();
                 return;
             }
@@ -258,7 +258,7 @@
                 localStorage.setItem("active_session_token", email);
                 evaluateRoutingState();
             } else {
-                alert("Galat password dala hai bhai! Dobara check karo.");
+                alert("Wrong Password! Please check again.");
             }
         }
 
