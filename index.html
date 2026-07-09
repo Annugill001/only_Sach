@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirf Sach - Truth Verification</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; }
+        .dark-card { background: rgba(17, 24, 39, 0.7); border: 1px solid rgba(37, 99, 235, 0.1); }
+    </style>
+</head>
+<body class="p-6 max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <header class="mb-8 border-b border-gray-800 pb-4 flex justify-between items-center">
+        <h1 class="text-3xl font-black text-blue-500 tracking-wider">SIRF SACH <span class="text-xs text-gray-500">v2026 Engine</span></h1>
+        <p class="text-xs text-green-400 bg-green-500/10 px-3 py-1 rounded-full animate-pulse">● Live Wire Sync Active</p>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Left & Center Content: Live Feed & Full Article View -->
+        <div class="md:col-span-2 space-y-6">
+            <h2 class="text-xl font-bold tracking-tight text-gray-200">Current Breaking Feeds (Updates Every 5s)</h2>
+            
+            <!-- News Cards Container -->
+            <div id="news-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Javascript will inject 6 different cards here -->
+            </div>
+
+            <!-- Full Article Brief Section -->
+            <div id="article-view" class="dark-card p-6 rounded-2xl hidden border-l-4 border-blue-500 bg-gray-900/40">
+                <div class="flex justify-between items-start mb-3">
+                    <h3 id="full-article-title" class="text-lg font-bold text-blue-400">Article Title</h3>
+                    <button onclick="closeArticle()" class="text-xs bg-gray-800 text-gray-400 px-2 py-1 rounded hover:bg-gray-700">Close</button>
+                </div>
+                <p id="full-article-content" class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">Detailed brief breakdown story...</p>
+            </div>
+        </div>
+
+        <!-- Right Content: Manual Truth Detector Box -->
+        <div class="space-y-6">
+            <h2 class="text-xl font-bold tracking-tight text-gray-200">Fact Authenticator Engine</h2>
+            
+            <div class="dark-card p-5 rounded-2xl space-y-4">
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Write or Paste Your Article</label>
+                <textarea id="manual-input" rows="4" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-gray-100 placeholder-gray-600" placeholder="Paste custom news or write words (e.g. 'guudgwdw' to test anti-spam)..."></textarea>
+                <button onclick="sendTextToPythonBackend()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition text-sm cursor-pointer shadow-lg shadow-blue-600/10">Verify News</button>
+            </div>
+
+            <!-- Verification Results Display Output -->
+            <div id="manual-result" class="dark-card p-5 rounded-2xl hidden space-y-4 border-t-4 border-gray-700">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span id="modal-status-icon" class="text-2xl">🛡️</span>
+                        <h4 id="modal-result-status" class="text-lg font-bold inline ml-2">Status</h4>
+                    </div>
+                    <span id="modal-result-score" class="text-2xl font-black text-gray-100">0%</span>
+                </div>
+                <div class="w-full bg-gray-950 rounded-full h-2">
+                    <div id="modal-result-bar" class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="modal-result-desc" class="text-xs text-gray-400 italic">Analysis brief statement summary...</p>
+                
+                <!-- Basis explanations -->
+                <div class="pt-3 border-t border-gray-800/80 space-y-2 text-xs">
+                    <p class="font-semibold text-gray-300">Detection Basis Basis Points:</p>
+                    <div id="modal-explain-1" class="text-gray-400 bg-gray-950/40 p-2 rounded border border-gray-900">• Point 1</div>
+                    <div id="modal-explain-2" class="text-gray-400 bg-gray-950/40 p-2 rounded border border-gray-900">• Point 2</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script Logic Integration -->
+    <script>
+        const BACKEND_URL = "http://127.0.0.1:9999/api";
+        let currentLiveArticles = [];
+
+        async function runAutoStreamEngine() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/live-feed`);
+                const freshData = await response.json();
+                
+                if (freshData && freshData.length > 0) {
+                    currentLiveArticles = freshData;
+                    const grid = document.getElementById('news-grid');
+                    grid.innerHTML = ''; 
+                    
+                    // Always loops exactly 6 separate unique articles from array
+                    currentLiveArticles.slice(0, 6).forEach((news, index) => {
+                        grid.innerHTML += `
+                            <div class="dark-card p-4 rounded-xl flex flex-col justify-between h-40">
+                                <div>
+                                    <span class="text-[9px] uppercase font-bold tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">Live Update</span>
+                                    <h3 class="font-bold text-xs mt-2 text-gray-200 line-clamp-1">${news.title}</h3>
+                                    <p class="text-[11px] text-gray-400 mt-1 line-clamp-2">${news.content}</p>
+                                </div>
+                                <div class="flex justify-between items-center text-xs pt-2 border-t border-gray-800/60">
+                                    <button onclick="readFullArticleInView(${index})" class="text-blue-400 hover:underline font-medium cursor-pointer">Read Article</button>
+                                    <button onclick="autoRouteToVerify(${index})" class="text-green-400 font-semibold bg-green-500/5 px-2 py-0.5 rounded border border-green-500/10 hover:bg-green-500/20 cursor-pointer">Verify</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (err) {
+                console.log("Stream polling delay...");
+            }
+        }
+
+        function readFullArticleInView(index) {
+            const news = currentLiveArticles[index];
+            if(!news) return;
+            document.getElementById('article-view').classList.remove('hidden');
+            document.getElementById('full-article-title').innerText = news.title;
+            document.getElementById('full-article-content').innerText = news.full_report || news.content;
+            document.getElementById('article-view').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeArticle() {
+            document.getElementById('article-view').classList.add('hidden');
+        }
+
+        function autoRouteToVerify(index) {
+            const news = currentLiveArticles[index];
+            if(!news) return;
+            document.getElementById('manual-input').value = news.content;
+            processVerificationPipeline(news.content);
+        }
+
+        function sendTextToPythonBackend() {
+            const text = document.getElementById('manual-input').value.trim();
+            if(!text) return alert("Please enter text first!");
+            processVerificationPipeline(text);
+        }
+
+        async function processVerificationPipeline(textPayload) {
+            const resultBox = document.getElementById('manual-result');
+            resultBox.classList.remove('hidden');
+            document.getElementById('modal-result-status').innerText = "Analyzing...";
+            document.getElementById('modal-result-desc').innerText = "Processing context layers...";
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/verify-news`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: textPayload })
+                });
+                const data = await response.json();
+
+                document.getElementById('modal-result-score').innerText = `${data.score}%`;
+                document.getElementById('modal-result-bar').style.width = `${data.score}%`;
+                document.getElementById('modal-result-status').innerText = data.status;
+                document.getElementById('modal-result-desc').innerText = data.description;
+                document.getElementById('modal-explain-1').innerText = `• ${data.explanation_1}`;
+                document.getElementById('modal-explain-2').innerText = `• ${data.explanation_2}`;
+
+                const bar = document.getElementById('modal-result-bar');
+                const icon = document.getElementById('modal-status-icon');
+                if(data.score > 70) {
+                    bar.className = "bg-green-500 h-2 rounded-full";
+                    icon.innerText = "🛡️";
+                } else if(data.score > 40) {
+                    bar.className = "bg-yellow-500 h-2 rounded-full";
+                    icon.innerText = "⚠️";
+                } else {
+                    bar.className = "bg-red-500 h-2 rounded-full";
+                    icon.innerText = "🚨";
+                }
+            } catch(err) {
+                console.log("Verification node pipeline error.");
+            }
+        }
+
+        // Initialize immediately and bind strict 5-second loop
+        document.addEventListener("DOMContentLoaded", () => {
+            runAutoStreamEngine();
+            setInterval(runAutoStreamEngine, 5000);
+        });
+    </script>
+</body>
+</html>
