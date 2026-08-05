@@ -1,18 +1,18 @@
 <div align="center">
 
-  <h1>🛡️ VERITAS AI</h1>
-  <h3>Real-Time News Credibility & Neural Verification Engine</h3>
+  <h1>🛡️ VERITAS AI (only_Sach)</h1>
+  <h3>Neural Fake News Detection & Real-Time Credibility Verification System</h3>
 
   <p>
-    An enterprise-grade, full-stack intelligence engine built to combat misinformation, fake news, and algorithmic clickbait. Powered by <b>FastAPI</b>, <b>Google Gemini 2.5 Flash</b>, and an ultra-responsive dark UI telemetry dashboard.
+    An enterprise-grade, full-stack intelligence engine built to combat misinformation, algorithmic clickbait, and unverified digital broadcasts. Powered by <b>FastAPI</b>, <b>Google Gemini 2.5 Flash</b>, and a high-performance interactive telemetry dashboard.
   </p>
 
 <!-- Badges Header -->
 <p align="center">
-  <a href="https://github.com/your-username/your-repo-name/stargazers"><img src="https://img.shields.io/github/stars/your-username/your-repo-name?style=for-the-badge&color=7c3aed" alt="Stars"></a>
-  <a href="https://github.com/your-username/your-repo-name/network/members"><img src="https://img.shields.io/github/forks/your-username/your-repo-name?style=for-the-badge&color=3b82f6" alt="Forks"></a>
-  <a href="https://github.com/your-username/your-repo-name/issues"><img src="https://img.shields.io/github/issues/your-username/your-repo-name?style=for-the-badge&color=10b981" alt="Issues"></a>
-  <a href="https://github.com/your-username/your-repo-name/blob/main/LICENSE"><img src="https://img.shields.io/github/license/your-username/your-repo-name?style=for-the-badge&color=f59e0b" alt="License"></a>
+  <a href="https://github.com/Annugill001/only_Sach/stargazers"><img src="https://img.shields.io/github/stars/Annugill001/only_Sach?style=for-the-badge&color=7c3aed" alt="Stars"></a>
+  <a href="https://github.com/Annugill001/only_Sach/network/members"><img src="https://img.shields.io/github/forks/Annugill001/only_Sach?style=for-the-badge&color=3b82f6" alt="Forks"></a>
+  <a href="https://github.com/Annugill001/only_Sach/issues"><img src="https://img.shields.io/github/issues/Annugill001/only_Sach?style=for-the-badge&color=10b981" alt="Issues"></a>
+  <a href="https://github.com/Annugill001/only_Sach/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Annugill001/only_Sach?style=for-the-badge&color=f59e0b" alt="License"></a>
 </p>
 
   <br />
@@ -20,24 +20,38 @@
 
 ---
 
-## ⚡ Technical Highlights
+## 🚨 Problem Statement
 
-- **🤖 LLM Verification Pipeline:** Leverages Google's `gemini-2.5-flash` model via structured JSON schema enforcement for sub-second, multi-variable truth index assessments.
-- **📰 Live Telemetry Stream:** Synchronizes in real-time with the Hacker News Firebase API to fetch and render raw open-source network broadcasts.
-- **📊 Metric Discrepancy Gauge:** Dynamic percentage-based graphical meters mapping Real vs. Fake likelihood scores with linguistic rationale summaries.
-- **🛡️ Multi-Session Audit Logging:** Profile-isolated audit history tracking stored dynamically via client storage with base64 encoded re-testing triggers.
-- **🎨 Futuristic Dark Telemetry UI:** Handcrafted dashboard using utility-first **Tailwind CSS**, dynamic state switching, and non-blocking DOM operations.
+In the modern digital information ecosystem, **misinformation spreads 6x faster than factual content**. Key challenges include:
+
+1. **Velocity of Unverified Broadcasts:** High-volume news aggregators circulate fabricated stories faster than manual fact-checkers can verify them.
+2. **Context Manipulation & Clickbait:** News items often mix partial truths with sensationalized headlines, making traditional black-and-white rule systems fail.
+3. **Lack of Instant Auditability:** End-users lack a lightweight tool to instantly calculate confidence scores and review source alignment in real-time.
+
+**VERITAS AI** addresses this gap by deploying zero-shot neural verification over structured LLM schema prompts, outputting immediate authenticity metrics and breakdown summaries.
 
 ---
 
-## 🏗️ Architecture & Data Flow
+## 📊 Verification Metrics & Accuracy Evaluation
 
-```mermaid
-graph TD
-    A[User / Live HN API] -->|News Snippet / Text| B[Frontend Dashboard]
-    B -->|POST /api/verify-news| C[FastAPI Gateway]
-    C -->|Environment Check & Prompt Formatting| D[Google Gemini 2.5 Flash API]
-    D -->|Structured JSON Response| C
-    C -->|Credibility Payload| B
-    B -->|Save Session Payload| E[Browser Local Storage Logs]
-    B -->|Render Dashboard| F[Telemetry UI Gauge & Index Cards]
+The engine calculates authenticity using a probabilistic confidence scoring framework:
+
+### 1. Confidence & Discrepancy Index
+Every text input is evaluated on a $0 \text{ to } 100\%$ scale:
+* **Authenticity Score ($\text{Score}_{\text{Real}}$):** Linguistic alignment with factual indices and verified corporate/press registries.
+* **Discrepancy Score ($\text{Score}_{\text{Fake}}$):** Mathematical complement representing risk, bias, or fabrication:
+$$\text{Score}_{\text{Fake}} = 100 - \text{Score}_{\text{Real}}$$
+
+### 2. Evaluation Matrix
+
+| Metric Scale | Score Range | Classification | Action Triggered |
+| :--- | :--- | :--- | :--- |
+| **High Credibility** | $70\% - 100\%$ | `VERIFIED / MATCHED` | Marked safe with green telemetry indicator |
+| **Moderate Risk** | $40\% - 69\%$ | `UNVERIFIED / MIXED` | Flagged for contextual review (Yellow indicator) |
+| **High Misinformation** | $0\% - 39\%$ | `FLAGGED MISLEADING` | High alert status (Red indicator) |
+
+---
+
+## 🗄️ Database & Data Handling Approach
+
+To maintain lightweight, privacy-focused client interactions without mandatory server-side state overhead, **VERITAS AI** employs a **Hybrid Client-Isolated Session Architecture**:
