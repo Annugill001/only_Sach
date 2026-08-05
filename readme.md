@@ -29,6 +29,19 @@ In the modern digital information ecosystem, **misinformation spreads 6x faster 
 3. **Lack of Instant Auditability:** End-users lack a lightweight tool to instantly calculate confidence scores and review source alignment in real-time.
 
 **VERITAS AI** addresses this gap by deploying zero-shot neural verification over structured LLM schema prompts, outputting immediate authenticity metrics and breakdown summaries.
+## 🛠️ Tech Stack
+
+| Layer | Technologies | Description |
+| :--- | :--- | :--- |
+| **Frontend Framework** | **HTML5 & Vanilla JavaScript (ES6+)** | Single-page Application (SPA) with zero external frame latency |
+| **Styling & UI Components**| **Tailwind CSS & FontAwesome** | Futuristic dark telemetry interface via CDN |
+| **Backend Framework** | **Python 3.10+ & FastAPI** | High-performance async REST API endpoint execution |
+| **ASGI Web Server** | **Uvicorn** | Lightweight server hosting the FastAPI application |
+| **AI Inference Engine**| **Google GenAI SDK (`google-genai`)** | Gemini 2.5 Flash model (`gemini-2.5-flash`) with structured JSON schema outputs |
+| **Data Validation** | **Pydantic** | Strict request schema validation for user payloads |
+| **Client Storage & State**| **Browser `localStorage` API** | Client-isolated audit logging (`audit_logs_<email>`) and session persistence |
+| **Data Encoding** | **Base64 (`btoa`/`atob`) & URI Encoding** | Safe text encoding for re-testing history items containing special characters |
+| **External API Stream** | **Hacker News Firebase REST API** | Real-time tech news feed integration |
 
 ---
 
@@ -55,3 +68,36 @@ $$\text{Score}_{\text{Fake}} = 100 - \text{Score}_{\text{Real}}$$
 ## 🗄️ Database & Data Handling Approach
 
 To maintain lightweight, privacy-focused client interactions without mandatory server-side state overhead, **VERITAS AI** employs a **Hybrid Client-Isolated Session Architecture**:
++-----------------------------------------------------------------+
+|                       Browser Storage Layer                     |
+|                                                                 |
+|  +-----------------------------------------------------------+  |
+|  | Active User Token: active_session_token                 |  |
+|  +-----------------------------------------------------------+  |
+|  | Audit Logs Key: audit_logs_{user_email}                 |  |
+|  |   [                                                       |  |
+|  |     { id, queryText, rate, timestamp, date },               |  |
+|  |     ...                                                   |  |
+|  |   ]                                                       |  |
+|  +-----------------------------------------------------------+  |
++-----------------------------------------------------------------+
+
+### Key Architectural Choices:
+* **Session Isolation:** Audit logs are key-bound to individual active user tokens (`audit_logs_<user_email>`), ensuring zero cross-profile data leakage.
+* **Base64 Payload Safe Encoding:** Historical queries use URI-encoded Base64 (`encodeURIComponent` + `btoa`) to safely handle special characters, quotes, and multiline text during re-testing.
+* **Stateless API Gateway:** The FastAPI backend operates state-independently, focusing strictly on high-throughput model execution while offloading audit persistence to local client storage.
+
+---
+
+## 🏗️ Architecture & Data Flow
+
+```mermaid
+graph TD
+    A[User / Live HN API Feed] -->|News Snippet / Text| B[Frontend Dashboard]
+    B -->|POST /api/verify-news| C[FastAPI Gateway]
+    C -->|Check API Keys & Inject Schema| D[Google Gemini 2.5 Flash Engine]
+    D -->|Structured JSON Output| C
+    C -->|Credibility Payload| B
+    B -->|Persist Log Payload| E[Browser Local Storage Engine]
+    B -->|Render Visuals| F[Telemetry UI Gauges & Audit Logs]
+
